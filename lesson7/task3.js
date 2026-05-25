@@ -4,7 +4,7 @@ function divide(numerator, denominator) {
     typeof numerator !== "number" ||
     typeof denominator !== "number"
   ) {
-    throw new Error(`Приймаються тільки числа > 0`);
+    throw new Error("Приймаються тільки числа > 0");
   }
   return numerator / denominator;
 }
@@ -15,7 +15,7 @@ function safeDivide(numerator, denominator) {
   } catch (error) {
     console.error(`Щось пішло не так! ${error.message}`);
   } finally {
-    console.log(`Робота виконана, з вас 50$`);
+    console.log("Робота виконана, з вас 50$");
   }
 }
 safeDivide(20, 0);

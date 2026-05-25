@@ -9,10 +9,16 @@ async function getUser() {
   return userData;
 }
 
-const allResults = Promise.all([getTodo(), getUser()])
-  .then((results) => console.log("All: ", results))
-  .catch((error) => console.error("Error: ", error));
+async function run() {
+  try {
+    const allResults = await Promise.all([getTodo(), getUser()]);
+    console.log("All: ", allResults);
 
-const raceResult = Promise.race([getTodo(), getUser()])
-  .then((result) => console.log("Race: ", result))
-  .catch((error) => console.error("Error: ", error));
+    const raceResult = await Promise.race([getTodo(), getUser()]);
+    console.log("Race: ", raceResult);
+  } catch (error) {
+    console.error("Error: ", error);
+  }
+}
+
+run();
