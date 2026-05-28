@@ -7,7 +7,7 @@ for (const value of numbers) {
     zeroCount++;
   } else if (value > 0) {
     positiveCount++;
-  } else (value < 0) {
+  } else if (value < 0) {
     negativeCount++;
   }
 }
