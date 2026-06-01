@@ -21,4 +21,8 @@ export default defineConfig([
       "@stylistic/no-trailing-spaces": "error",
     },
   },
+  {
+    files: ["**/*.{test,spec}.{js,mjs,cjs}"],
+    languageOptions: { globals: globals.jest },
+  },
 ]);
