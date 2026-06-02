@@ -1,3 +1,5 @@
 node_modules
 .vscode
 coverage
+jest_html_reporters.html
+jest-html-reporters-attach

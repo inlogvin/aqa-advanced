@@ -7,7 +7,8 @@
     "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "api_tests_lesson15": "npx jest signIn.test.js && npx jest carList.test.js && npx jest addCar.test.js"
   },
   "author": "Inna Logvin",
   "license": "ISC",
@@ -27,6 +28,7 @@
     "globals": "^17.6.0",
     "husky": "^9.1.7",
     "jest": "^30.4.2",
+    "jest-html-reporters": "^3.1.7",
     "lint-staged": "^17.0.5"
   },
   "lint-staged": {
