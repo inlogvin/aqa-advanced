@@ -8,7 +8,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepare": "husky",
-    "api_tests_lesson15": "npx jest signIn.test.js && npx jest carList.test.js && npx jest addCar.test.js"
+    "api_tests_lesson15": "npx jest signIn.test.js && npx jest carList.test.js && npx jest addCar.test.js",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "author": "Inna Logvin",
   "license": "ISC",
@@ -24,6 +26,7 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "babel-jest": "^30.4.1",
     "cross-env": "^10.1.0",
+    "cypress": "^15.17.0",
     "eslint": "^10.4.0",
     "globals": "^17.6.0",
     "husky": "^9.1.7",
