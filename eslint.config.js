@@ -25,4 +25,9 @@ export default defineConfig([
     files: ["**/*.{test,spec}.{js,mjs,cjs}"],
     languageOptions: { globals: globals.jest },
   },
+  {
+    files: ["cypress/**/*.cy.{js,mjs,cjs}"],
+    languageOptions: { globals: globals.browser },
+    rules: { "no-undef": "off" },
+  },
 ]);
