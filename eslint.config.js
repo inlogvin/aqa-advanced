@@ -26,8 +26,8 @@ export default defineConfig([
     languageOptions: { globals: globals.jest },
   },
   {
-    files: ["cypress/**/*.cy.{js,mjs,cjs}"],
-    languageOptions: { globals: globals.browser },
+    files: ["cypress/**/*.{js,mjs,cjs}"],
+    languageOptions: { globals: { ...globals.browser, cy: "readonly", Cypress: "readonly", expect: "readonly", assert: "readonly" } },
     rules: { "no-undef": "off" },
   },
 ]);
