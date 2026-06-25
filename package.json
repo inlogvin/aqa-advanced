@@ -10,7 +10,13 @@
     "prepare": "husky",
     "api_tests_lesson15": "npx jest signIn.test.js && npx jest carList.test.js && npx jest addCar.test.js",
     "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "cy:open:qauto2": "cypress open --config-file cypress.config.qauto2.js",
+    "cy:run": "cypress run --env allure=true",
+    "cy:run:qauto2": "cypress run --config-file cypress.config.qauto2.js --env allure=true",
+    "allure:report": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "allure:serve": "allure serve allure-results"
+
   },
   "author": "Inna Logvin",
   "license": "ISC",
@@ -24,7 +30,9 @@
     "@babel/preset-env": "^7.29.7",
     "@eslint/js": "^10.0.1",
     "@faker-js/faker": "^10.5.0",
+    "@shelex/cypress-allure-plugin": "^2.41.2",
     "@stylistic/eslint-plugin": "^5.10.0",
+    "allure-commandline": "^2.43.0",
     "babel-jest": "^30.4.1",
     "cross-env": "^10.1.0",
     "cypress": "^15.17.0",
