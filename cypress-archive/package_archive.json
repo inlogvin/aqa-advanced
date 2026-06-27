@@ -1,0 +1,6 @@
+{
+    "cy:open": "cypress open",
+    "cy:open:qauto2": "cypress open --config-file cypress.config.qauto2.js",
+    "cy:run": "cypress run --env allure=true",
+    "cy:run:qauto2": "cypress run --config-file cypress.config.qauto2.js --env allure=true",
+}
