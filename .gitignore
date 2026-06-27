@@ -5,3 +5,10 @@ jest_html_reporters.html
 jest-html-reporters-attach
 allure-results
 allure-report
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
