@@ -17,6 +17,9 @@ class Expenses {
   get successAlert() {
     return cy.get("app-alert-list");
   }
+  get expensesTable() {
+    return cy.get(".expenses_table tbody");
+  }
   clearMileAge(){
     this.mileAgeInput.clear();
     return this;
