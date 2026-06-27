@@ -4,7 +4,7 @@ import stylistic from "@stylistic/eslint-plugin";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
-  { ignores: ["node_modules/**", "**/*.min.js", "jest-html-reporters-attach/**"] },
+  { ignores: ["node_modules/**", "**/*.min.js", "jest-html-reporters-attach/**", "cypress-archive/**"] },
   {
     files: ["**/*.{js,mjs,cjs}"],
     plugins: { js, "@stylistic": stylistic },
