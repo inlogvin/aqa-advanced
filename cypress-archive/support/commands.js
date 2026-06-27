@@ -10,17 +10,19 @@ Cypress.Commands.add("visitHome", () => {
 });
 
 Cypress.Commands.add("loginByApi", () => {
-  cy.request({
-    method: "POST",
-    url: "/api/auth/signin",
-    auth: {
-      username: Cypress.env("basicAuth").username,
-      password: Cypress.env("basicAuth").password,
-    },
-    body: {
-      email: Cypress.env("email"),
-      password: Cypress.env("password"),
-    },
+  cy.session("apiUser", () => {
+    cy.request({
+      method: "POST",
+      url: "/api/auth/signin",
+      auth: {
+        username: Cypress.env("basicAuth").username,
+        password: Cypress.env("basicAuth").password,
+      },
+      body: {
+        email: Cypress.env("email"),
+        password: Cypress.env("password"),
+      },
+    });
   });
 });
 
@@ -38,6 +40,21 @@ Cypress.Commands.add("clearGarage", () => {
     body.data.forEach((car) => {
       cy.request("DELETE", `/api/cars/${car.id}`);
     });
+  });
+});
+
+Cypress.Commands.add("getCars", () => {
+  cy.request({
+    method: "GET",
+    url: "/api/cars",
+  });
+});
+
+Cypress.Commands.add("createExpenseByApi", (expenseData) => {
+  cy.request({
+    method: "POST",
+    url: "/api/expenses",
+    body: expenseData,
   });
 });
 
