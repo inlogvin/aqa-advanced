@@ -13,7 +13,8 @@
     "allure:open": "allure open allure-report",
     "allure:serve": "allure serve allure-results",
     "playwright:test": "npx playwright test",
-    "playwright:headed": "npx playwright test --headed"
+    "playwright:headed": "npx playwright test --headed",
+    "playwright:ui": "npx playwright test --ui" 
   },
   "author": "Inna Logvin",
   "license": "ISC",
