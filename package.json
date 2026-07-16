@@ -14,7 +14,12 @@
     "allure:serve": "allure serve allure-results",
     "playwright:test": "npx playwright test",
     "playwright:headed": "npx playwright test --headed",
-    "playwright:ui": "npx playwright test --ui" 
+    "playwright:ui": "npx playwright test --ui",
+    "playwright:qauto": "npx playwright test --project=qauto-chromium",
+    "playwright:qauto2": "npx playwright test --project=qauto2-chromium",
+    "playwright:all": "npx playwright test",
+    "playwright:ui:qauto": "npx playwright test --ui --project=qauto-chromium",
+    "playwright:ui:qauto2": "npx playwright test --ui --project=qauto2-chromium"
   },
   "author": "Inna Logvin",
   "license": "ISC",
@@ -34,6 +39,7 @@
     "allure-commandline": "^2.43.0",
     "babel-jest": "^30.4.1",
     "cross-env": "^10.1.0",
+    "dotenv": "^17.4.2",
     "eslint": "^10.4.0",
     "globals": "^17.6.0",
     "husky": "^9.1.7",
