@@ -1,96 +1,92 @@
 import { test, expect } from '@playwright/test';
-import { faker } from '@faker-js/faker';
-import { ERROR_MESSAGES } from './data/errorMessages';
+import { Header } from '@/components/Header.pom';
+import { SignInModal } from '@/components/SignInModal.pom';
+import { RegistrationPage } from '@/pages/RegistrationPage.pom';
+import { generateUser } from '@/utils/testData';
+import { ERROR_MESSAGES } from '@/utils/errorMessages';
 
+test.describe('Registration form (POM)', () => {
+  let registrationPage: RegistrationPage;
 
-const user = {
-  name: faker.person.firstName('male').replace(/[^a-zA-Z]/g, '').slice(0, 20),
-  lastName: faker.person.lastName().replace(/[^a-zA-Z]/g, '').slice(0, 20),
-  email: `aqa_${faker.internet.email()}`,
-  password: 'Test1234!'
-};
+  test.beforeEach(async ({ page }) => {
+    const header = new Header(page);
+    const signInModal = new SignInModal(page);
+    registrationPage = new RegistrationPage(page);
 
-
-test.describe('Registration form', () => {
-    test.beforeEach(async ({ page }) => {
-    await page.goto('/');  
-    await page.locator('button.btn-outline-white').click();
-    await page.locator('button.btn-link', { hasText: 'Registration' }).click();
+    await registrationPage.open();
+    await header.openSignIn();
+    await signInModal.goToRegistration();
   });
-  test.describe('Positive cases', () => { 
-    test('Successful registration', async ({page}) => 
-    {
-        await expect(page.getByRole('heading', { name: 'Registration' })).toBeVisible();
-        await page.locator('#signupName').fill(user.name);
-        await page.locator('#signupLastName').fill(user.lastName);
-        await page.locator('#signupEmail').fill(user.email);
-        await page.locator('#signupPassword').fill(user.password);
-        await page.locator('#signupRepeatPassword').fill(user.password);
-        await page.locator('button.btn-primary', { hasText: 'Register' }).click();
-        await expect(page).toHaveURL('/panel/garage');
-    })
-   })
+
+  test.describe('Positive cases', () => {
+    test('Successful registration', async ({ page }) => {
+      await expect(registrationPage.heading).toBeVisible();
+      await registrationPage.register(generateUser());
+      await expect(page).toHaveURL('/panel/garage');
+    });
+  });
+
   test.describe('Negative cases', () => {
-    test('error when name is empty', async ({ page }) => {
-      await page.locator('#signupName').focus();
-      await page.locator('#signupName').blur();
-      await expect(page.locator('.invalid-feedback')).toHaveText(ERROR_MESSAGES.name.required);
+    test('error when name is empty', async () => {
+      await registrationPage.nameInput.focus();
+      await registrationPage.nameInput.blur();
+      await expect(registrationPage.errorMessage).toHaveText(ERROR_MESSAGES.name.required);
     })
 
-    test('error when name is invalid', async ({ page }) => {
-      await page.locator('#signupName').fill('Ім`я1');
-      await page.locator('#signupName').blur();
-      await expect(page.locator('.invalid-feedback')).toHaveText(ERROR_MESSAGES.name.invalid);
+    test('error when name is invalid', async () => {
+      await registrationPage.nameInput.fill('Ім`я1');
+      await registrationPage.nameInput.blur();
+      await expect(registrationPage.errorMessage).toHaveText(ERROR_MESSAGES.name.invalid);
     })
 
-    test('error when last name is empty', async ({ page }) => {
-      await page.locator('#signupLastName').focus();
-      await page.locator('#signupLastName').blur();
-      await expect(page.locator('.invalid-feedback')).toHaveText(ERROR_MESSAGES.lastName.required);
+    test('error when last name is empty', async () => {
+      await registrationPage.lastNameInput.focus();
+      await registrationPage.lastNameInput.blur();
+      await expect(registrationPage.errorMessage).toHaveText(ERROR_MESSAGES.lastName.required);
     })
 
     test('error when last name is invalid', async ({ page }) => {
-      await page.locator('#signupLastName').fill('Прізвище');
-      await page.locator('#signupLastName').blur();
-      await expect(page.locator('.invalid-feedback')).toHaveText(ERROR_MESSAGES.lastName.invalid);
+      await registrationPage.lastNameInput.fill('Прізвище');
+      await registrationPage.lastNameInput.blur();
+      await expect(registrationPage.errorMessage).toHaveText(ERROR_MESSAGES.lastName.invalid);
     })
 
     test('error when email is empty', async ({ page }) => {
-      await page.locator('#signupEmail').focus();
-      await page.locator('#signupEmail').blur();
-      await expect(page.locator('.invalid-feedback')).toHaveText(ERROR_MESSAGES.email.required);
+      await registrationPage.emailInput.focus();
+      await registrationPage.emailInput.blur();
+      await expect(registrationPage.errorMessage).toHaveText(ERROR_MESSAGES.email.required);
     })
 
 
     test('error when email is invalid', async ({ page }) => {
-      await page.locator('#signupEmail').fill('testgmail.com');
-      await page.locator('#signupEmail').blur();
-      await expect(page.locator('.invalid-feedback')).toHaveText(ERROR_MESSAGES.email.invalid);
+      await registrationPage.emailInput.fill('testgmail.com');
+      await registrationPage.emailInput.blur();
+      await expect(registrationPage.errorMessage).toHaveText(ERROR_MESSAGES.email.invalid);
     })
 
     test('error when password is empty', async ({ page }) => {
-      await page.locator('#signupPassword').focus();
-      await page.locator('#signupPassword').blur();
-      await expect(page.locator('.invalid-feedback')).toHaveText(ERROR_MESSAGES.password.required);
+      await registrationPage.passwordInput.focus();
+      await registrationPage.passwordInput.blur();
+      await expect(registrationPage.errorMessage).toHaveText(ERROR_MESSAGES.password.required);
     })
 
     test('error when password is invalid', async ({ page }) => {
-      await page.locator('#signupPassword').fill('password');
-      await page.locator('#signupPassword').blur();
-      await expect(page.locator('.invalid-feedback')).toHaveText(ERROR_MESSAGES.password.invalid);
+      await registrationPage.passwordInput.fill('password');
+      await registrationPage.passwordInput.focus();
+      await expect(registrationPage.errorMessage).toHaveText(ERROR_MESSAGES.password.invalid);
     })
 
     test('error when re-enter password is empty', async ({ page }) => {
-      await page.locator('#signupRepeatPassword').focus();
-      await page.locator('#signupRepeatPassword').blur();
-      await expect(page.locator('.invalid-feedback')).toHaveText(ERROR_MESSAGES.rePassword.required);
+      await registrationPage.repeatPasswordInput.focus();
+      await registrationPage.repeatPasswordInput.blur();
+      await expect(registrationPage.errorMessage).toHaveText(ERROR_MESSAGES.rePassword.required);
     })
 
     test('error when passwords do not match', async ({ page }) => {
-      await page.locator('#signupPassword').fill('Test1234!');
-      await page.locator('#signupRepeatPassword').fill('Test5678!');
-      await page.locator('#signupRepeatPassword').blur();
-      await expect(page.locator('.invalid-feedback')).toHaveText(ERROR_MESSAGES.rePassword.mismatch);
+      await registrationPage.passwordInput.fill('Test1234!');
+      await registrationPage.repeatPasswordInput.fill('Test5678!');
+      await registrationPage.repeatPasswordInput.blur();
+      await expect(registrationPage.errorMessage).toHaveText(ERROR_MESSAGES.rePassword.mismatch);
     })
   })
-}) 
+});
