@@ -7,10 +7,15 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 dotenv.config();
 
+/** Custom test options set per project (see src/fixtures/params.fixture.ts). */
+type ConfigOptions = {
+  paramsFilePath: string;
+};
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export default defineConfig<ConfigOptions>({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -40,28 +45,85 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+    /*
+     * Auth setup projects: log in once per environment via the UI and save the
+     * storage state. `params: <qautoN>.config.json` tells the setup where to save
+     * (see src/config/params). Every authenticated project depends on its setup.
+     */
+    {
+      name: 'setup-qauto',
+      testMatch: /.*\.setup\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://qauto.forstudy.space/',
+        paramsFilePath: 'src/config/params/qauto1.config.json',
+      },
+    },
+    {
+      name: 'setup-qauto2',
+      testMatch: /.*\.setup\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://qauto2.forstudy.space/',
+        paramsFilePath: 'src/config/params/qauto2.config.json',
+      },
+    },
+
+    /*
+     * Authenticated tests (files named *.auth.spec.ts). They reuse the saved
+     * storage state via the userGaragePage fixture, so a new authenticated spec
+     * only needs the `.auth.spec.ts` suffix — no config change required.
+     */
+    {
+      name: 'qauto-auth',
+      testMatch: /.*\.auth\.spec\.ts/,
+      dependencies: ['setup-qauto'],
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://qauto.forstudy.space/',
+        paramsFilePath: 'src/config/params/qauto1.config.json',
+      },
+    },
+    {
+      name: 'qauto2-auth',
+      testMatch: /.*\.auth\.spec\.ts/,
+      dependencies: ['setup-qauto2'],
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://qauto2.forstudy.space/',
+        paramsFilePath: 'src/config/params/qauto2.config.json',
+      },
+    },
+
+    /* Non-authenticated tests run across the full browser matrix. */
     {
       name: 'qauto-chromium',
+      testIgnore: [/.*\.auth\.spec\.ts/, /.*\.setup\.ts/],
       use: { ...devices['Desktop Chrome'], baseURL: 'https://qauto.forstudy.space/' },
     },
     {
       name: 'qauto-firefox',
+      testIgnore: [/.*\.auth\.spec\.ts/, /.*\.setup\.ts/],
       use: { ...devices['Desktop Firefox'], baseURL: 'https://qauto.forstudy.space/' },
     },
     {
       name: 'qauto-webkit',
+      testIgnore: [/.*\.auth\.spec\.ts/, /.*\.setup\.ts/],
       use: { ...devices['Desktop Safari'], baseURL: 'https://qauto.forstudy.space/' },
     },
     {
       name: 'qauto2-chromium',
+      testIgnore: [/.*\.auth\.spec\.ts/, /.*\.setup\.ts/],
       use: { ...devices['Desktop Chrome'], baseURL: 'https://qauto2.forstudy.space/' },
     },
     {
       name: 'qauto2-firefox',
+      testIgnore: [/.*\.auth\.spec\.ts/, /.*\.setup\.ts/],
       use: { ...devices['Desktop Firefox'], baseURL: 'https://qauto2.forstudy.space/' },
     },
     {
       name: 'qauto2-webkit',
+      testIgnore: [/.*\.auth\.spec\.ts/, /.*\.setup\.ts/],
       use: { ...devices['Desktop Safari'], baseURL: 'https://qauto2.forstudy.space/' },
     },
 
