@@ -1,0 +1,8 @@
+{
+  "global": {
+    "baseUrl": "https://qauto2.forstudy.space",
+    "storageStatePath": "playwright/.auth/qauto2-user.json",
+    "userEmailEnv": "USER_EMAIL_QAUTO2",
+    "userPasswordEnv": "USER_PASSWORD_QAUTO2"
+  }
+}
