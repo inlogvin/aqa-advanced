@@ -7,8 +7,8 @@ export const carsApiFixtures = paramsFixtures.extend<{
   carsApiClient: async ({ request, params }, use) => {
     await request.post('/api/auth/signin', {
       data: {
-        email: process.env[params.userEmailEnv],
-        password: process.env[params.userPasswordEnv],
+        email: params.userEmail,
+        password: params.userPassword,
         remember: false,
       },
     });
