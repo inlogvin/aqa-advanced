@@ -2,8 +2,16 @@ import { test as base } from '@playwright/test';
 import { join, isAbsolute } from 'path';
 import { ParamsConfigGenerator } from '@/config/paramsConfigGenerator.util';
 
-/** Shape of the merged params coming from src/config/params/*.config.json */
+/** Public shape handed to tests/fixtures — already resolved, no env lookups needed. */
 export interface Params {
+  baseUrl: string;
+  storageStatePath: string;
+  userEmail: string;
+  userPassword: string;
+}
+
+/** Raw shape as stored in src/config/params/*.config.json (env var *names*, not values). */
+interface RawParams {
   baseUrl: string;
   storageStatePath: string;
   userEmailEnv: string;
@@ -25,8 +33,20 @@ export const paramsFixtures = base.extend<{
       : join(process.cwd(), paramsFilePath);
     const loader = new ParamsConfigGenerator(filePath);
     const tags = testInfo.tags.map((t) => t.substring(1)); // drop leading '@'
-    const merged = loader.getParams(...tags) as unknown as Params;
-    await use(merged);
+    const raw = loader.getParams(...tags) as unknown as RawParams;
+
+    const userEmail = process.env[raw.userEmailEnv];
+    const userPassword = process.env[raw.userPasswordEnv];
+    if (!userEmail || !userPassword) {
+      throw new Error(`Missing credentials: set ${raw.userEmailEnv} and ${raw.userPasswordEnv} in .env`);
+    }
+
+    await use({
+      baseUrl: raw.baseUrl,
+      storageStatePath: raw.storageStatePath,
+      userEmail,
+      userPassword,
+    });
   },
 });
 

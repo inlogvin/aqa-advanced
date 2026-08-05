@@ -14,17 +14,9 @@ setup('authenticate as user', async ({ page, params }) => {
   const header = new Header(page);
   const signInModal = new SignInModal(page);
 
-  const email = process.env[params.userEmailEnv];
-  const password = process.env[params.userPasswordEnv];
-  if (!email || !password) {
-    throw new Error(
-      `Missing credentials: set ${params.userEmailEnv} and ${params.userPasswordEnv} in .env`,
-    );
-  }
-
   await page.goto(params.baseUrl);
   await header.openSignIn();
-  await signInModal.login(email, password);
+  await signInModal.login(params.userEmail, params.userPassword);
 
   await expect(page).toHaveURL('/panel/garage');
   await page.context().storageState({ path: params.storageStatePath });
